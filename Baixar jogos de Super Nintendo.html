@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos de Super Nintendo - Lista Interativa</title>
+    <style>
+        :root {
+            --primary-color: #6200ea;
+            --secondary-color: #03dac6;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --on-surface-color: #e0e0e0;
+            --on-primary-color: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--background-color);
+            color: var(--on-surface-color);
+            font-size: 16px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-image: url('https://files.catbox.moe/owoaet.jpg');
+            background-size: cover;
+            background-position: center;
+            color: var(--on-primary-color);
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        #search, #regionFilter, #letterFilter {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            background-color: var(--background-color);
+            color: var(--on-surface-color);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        #search:focus, #regionFilter:focus, #letterFilter:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: var(--on-primary-color);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        tr {
+            background-color: var(--surface-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        td {
+            vertical-align: middle;
+        }
+        
+        td:nth-child(1) {
+            width: 60%;
+            min-width: 200px;
+        }
+        
+        td:nth-child(2) {
+            width: 20%;
+            min-width: 100px;
+        }
+        
+        td:nth-child(3) {
+            width: 20%;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        a:hover {
+            color: #04f7e3;
+        }
+        
+        .flag {
+            display: inline-block;
+            width: 30px;
+            height: 20px;
+            margin-right: 10px;
+            vertical-align: middle;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .flag-japan { background-image: url('https://files.catbox.moe/dnljc9.png'); }
+        .flag-usa { background-image: url('https://files.catbox.moe/5llj4b.png'); }
+        .flag-europe { background-image: url('https://files.catbox.moe/u8i8d7.png'); }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--background-color);
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .download-btn:hover {
+            background-color: #04f7e3;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            
+            tr {
+                margin-bottom: 20px;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            
+            td {
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+                min-height: 50px;
+            }
+            
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            
+            td:nth-child(1), td:nth-child(2), td:nth-child(3) {
+                width: 100%;
+                min-width: 100%;
+            }
+            
+            .download-btn {
+                display: inline-block;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Jogos de Super Nintendo</h1>
+    </header>
+    <div class="container">
+        <div class="controls">
+            <input type="text" id="search" placeholder="Pesquisar jogos...">
+            <select id="regionFilter">
+                <option value="all">Todas as regiões</option>
+                <option value="japan">Japão</option>
+                <option value="usa">USA</option>
+                <option value="europe">Europa</option>
+            </select>
+            <select id="letterFilter">
+                <option value="all">Todas as letras</option>
+                <option value="#">#</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+                <option value="J">J</option>
+                <option value="K">K</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+                <option value="O">O</option>
+                <option value="P">P</option>
+                <option value="Q">Q</option>
+                <option value="R">R</option>
+                <option value="S">S</option>
+                <option value="T">T</option>
+                <option value="U">U</option>
+                <option value="V">V</option>
+                <option value="W">W</option>
+                <option value="X">X</option>
+                <option value="Y">Y</option>
+                <option value="Z">Z</option>
+            </select>
+        </div>
+        <table id="gamesTable">
+            <thead>
+                <tr>
+                    <th>Jogo</th>
+                    <th>Região</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os jogos serão inseridos aqui pelo JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const games = [
+            {name: "'96 Zenkoku Koukou Soccer Senshuken", region: "japan", downloadLink: "https://files.catbox.moe/z5d69k.zip", infoLink: "https://vimm.net/vault/41054"},
+            {name: "[BIOS] Super NES CD-ROM: Boot ROM P", region: "japan", downloadLink: "https://files.catbox.moe/xnu9ms.zip", infoLink: "https://vimm.net/vault/41053"},
+            {name: "2020 Super Baseball", region: "japan", downloadLink: "https://files.catbox.moe/c98b1z.zip", infoLink: "https://vimm.net/vault/41055"},
+            {name: "3 Ninjas Kick Back", region: "usa", downloadLink: "https://files.catbox.moe/dyt5hs.zip", infoLink: "https://vimm.net/vault/1001"},
+            {name: "3-jigen Kakutou Ballz", region: "japan", downloadLink: "https://files.catbox.moe/seqsur.zip", infoLink: "https://vimm.net/vault/41056"},
+            {name: "3-jigen Kakutou Ballz D", region: "japan", downloadLink: "https://files.catbox.moe/npwzcn.zip", infoLink: "https://vimm.net/vault/41057"},
+            {name: "3x3 Eyes: Juuma Houkan", region: "japan", downloadLink: "https://files.catbox.moe/sfykpm.zip", infoLink: "https://vimm.net/vault/41058"},
+            {name: "3x3 Eyes: Seima Kourinden", region: "japan", downloadLink: "https://files.catbox.moe/dpt6nm.zip", infoLink: "https://vimm.net/vault/41059"},
+            {name: "4-nin Shougi", region: "japan", downloadLink: "https://files.catbox.moe/c2r9ge.zip", infoLink: "https://vimm.net/vault/41060"},
+            {name: "46 Okunen Monogatari: Harukanaru Eden e", region: "japan", downloadLink: "https://files.catbox.moe/r0sd3h.zip", infoLink: "https://vimm.net/vault/41061"},
+            {name: "7th Saga, The", region: "usa", downloadLink: "https://files.catbox.moe/dpc2r0.zip", infoLink: "https://vimm.net/vault/1003"},
+            {name: "90 Minutes: European Prime Goal", region: "europe", downloadLink: "https://files.catbox.moe/k69wgi.zip", infoLink: "https://vimm.net/vault/41062"},
+            {name: "90 Minutes: European Prime Goal P", region: "europe", downloadLink: "https://files.catbox.moe/3apacb.zip", infoLink: "https://vimm.net/vault/41063"},
+            {name: "A.S.P.: Air Strike Patrol", region: "usa", downloadLink: "https://files.catbox.moe/ue36fa.zip", infoLink: "https://vimm.net/vault/1028"}
+        ];
+
+        function renderGames(filteredGames) {
+            const tbody = document.querySelector('#gamesTable tbody');
+            tbody.innerHTML = '';
+            filteredGames.forEach(game => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="Jogo"><a href="${game.infoLink}" target="_blank">${game.name}</a></td>
+                    <td data-label="Região"><span class="flag flag-${game.region}"></span>${game.region.charAt(0).toUpperCase() + game.region.slice(1)}</td>
+                    <td data-label="Download"><a href="${game.downloadLink}" class="download-btn" target="_blank">Baixar</a></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterGames() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const selectedRegion = document.getElementById('regionFilter').value;
+            const selectedLetter = document.getElementById('letterFilter').value;
+            
+            const filteredGames = games.filter(game => {
+                const nameStartsWith = game.name.charAt(0).toUpperCase();
+                const startsWithNumber = !isNaN(parseInt(nameStartsWith));
+                const startsWithSymbol = !(/[a-zA-Z0-9]/).test(nameStartsWith);
+                
+                return game.name.toLowerCase().includes(searchTerm) &&
+                    (selectedRegion === 'all' || game.region === selectedRegion) &&
+                    (selectedLetter === 'all' || 
+                    (selectedLetter === '#' && (startsWithNumber || startsWithSymbol)) ||
+                    (selectedLetter !== '#' && nameStartsWith === selectedLetter));
+            });
+            
+            renderGames(filteredGames);
+        }
+
+        document.getElementById('search').addEventListener('input', filterGames);
+        document.getElementById('regionFilter').addEventListener('change', filterGames);
+        document.getElementById('letterFilter').addEventListener('change', filterGames);
+
+        // Renderiza todos os jogos inicialmente
+        renderGames(games);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
